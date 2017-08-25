@@ -1,0 +1,24 @@
+{
+  "name": "vue-unity-webgl",
+  "version": "1.0.0",
+  "description": "Unity WebGL component for VueJs application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/votetake/vue-unity-webgl.git"
+  },
+  "keywords": [
+    "react",
+    "unity",
+    "webgl"
+  ],
+  "author": "votetake",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/votetake/vue-unity-webgl/issues"
+  },
+  "homepage": "https://github.com/votetake/vue-unity-webgl#readme"
+}
