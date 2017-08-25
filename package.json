@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/votetake/vue-unity-webgl/issues"
   },
-  "homepage": "https://github.com/votetake/vue-unity-webgl#readme"
+  "homepage": "https://github.com/votetake/vue-unity-webgl#readme",
+  "dependencies": {
+    "vue": "^2.4.2"
+  }
 }
