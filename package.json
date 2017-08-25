@@ -2,7 +2,7 @@
   "name": "vue-unity-webgl",
   "version": "1.0.0",
   "description": "Unity WebGL component for VueJs application",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/votetake/vue-unity-webgl.git"
   },
   "keywords": [
-    "react",
+    "vue",
     "unity",
     "webgl"
   ],
