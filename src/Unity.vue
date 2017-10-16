@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div class="footer">
+    <div class="footer" v-if="hideFooter !== true">
       <a class="fullscreen" @click.prevent="fullscreen">Fullscreen</a>
     </div>
   </div>
@@ -18,7 +18,7 @@
   import Vue from 'vue'
 
   export default {
-    props: ['src', 'module', 'width', 'height', 'externalProgress', 'unityLoader'],
+    props: ['src', 'module', 'width', 'height', 'externalProgress', 'unityLoader', 'hideFooter'],
     data () {
       return {
         gameInstance: null,
@@ -29,7 +29,7 @@
     },
     methods: {
       fullscreen () {
-        UnityInstance.SetFullscreen(1)
+        this.gameInstance.SetFullscreen(1)
       }
     },
     beforeMount() {
