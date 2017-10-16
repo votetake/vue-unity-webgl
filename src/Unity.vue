@@ -19,6 +19,7 @@
 
   export default {
     props: ['src', 'module', 'width', 'height', 'externalProgress', 'unityLoader', 'hideFooter'],
+    name: 'UnityWebGL',
     data () {
       return {
         gameInstance: null,
@@ -60,7 +61,7 @@
       }
     },
     mounted () {
-      function init () {
+      const instantiate = () => {
         if (typeof UnityLoader === 'undefined') {
           let error = 'The UnityLoader was not defined, please add the script tag ' +
             'to the base html and embed the UnityLoader.js file Unity exported or use "unityLoader" attribute for path to UnityLoader.js.'
@@ -90,10 +91,10 @@
       }
 
       if (this.eventBus.ready) {
-        init.bind(this)()
+        instantiate()
       } else {
         this.eventBus.$on('onload', () => {
-          init.bind(this)()
+          instantiate()
         })
       }
     }
