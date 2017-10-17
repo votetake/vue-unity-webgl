@@ -1,8 +1,10 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.vueUnityWebGL = {})));
-}(this, (function (exports) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.vueUnityWebGL = factory());
+}(this, (function () { 'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*!
  * Vue.js v2.5.2
@@ -42,7 +44,7 @@ function isPrimitive(value) {
  * is a JSON-compliant type.
  */
 function isObject(obj) {
-  return obj !== null && typeof obj === 'object';
+  return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
 }
 
 /**
@@ -78,7 +80,7 @@ function isValidArrayIndex(val) {
  * Convert a value to a string that is actually rendered.
  */
 function toString(val) {
-  return val == null ? '' : typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val);
+  return val == null ? '' : (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' ? JSON.stringify(val, null, 2) : String(val);
 }
 
 /**
@@ -232,14 +234,14 @@ function noop(a, b, c) {}
 /**
  * Always return false.
  */
-var no = function (a, b, c) {
+var no = function no(a, b, c) {
   return false;
 };
 
 /**
  * Return same value
  */
-var identity = function (_) {
+var identity = function identity(_) {
   return _;
 };
 
@@ -481,7 +483,7 @@ if (inBrowser) {
 // this needs to be lazy-evaled because vue may be required before
 // vue-server-renderer can set VUE_ENV
 var _isServer;
-var isServerRendering = function () {
+var isServerRendering = function isServerRendering() {
   if (_isServer === undefined) {
     /* istanbul ignore if */
     if (!inBrowser && typeof global !== 'undefined') {
@@ -540,13 +542,13 @@ var formatComponentName = noop;
 if (process.env.NODE_ENV !== 'production') {
   var hasConsole = typeof console !== 'undefined';
   var classifyRE = /(?:^|[-_])(\w)/g;
-  var classify = function (str) {
+  var classify = function classify(str) {
     return str.replace(classifyRE, function (c) {
       return c.toUpperCase();
     }).replace(/[-_]/g, '');
   };
 
-  warn = function (msg, vm) {
+  warn = function warn(msg, vm) {
     var trace = vm ? generateComponentTrace(vm) : '';
 
     if (config.warnHandler) {
@@ -556,13 +558,13 @@ if (process.env.NODE_ENV !== 'production') {
     }
   };
 
-  tip = function (msg, vm) {
+  tip = function tip(msg, vm) {
     if (hasConsole && !config.silent) {
       console.warn("[Vue tip]: " + msg + (vm ? generateComponentTrace(vm) : ''));
     }
   };
 
-  formatComponentName = function (vm, includeFile) {
+  formatComponentName = function formatComponentName(vm, includeFile) {
     if (vm.$root === vm) {
       return '<Root>';
     }
@@ -577,7 +579,7 @@ if (process.env.NODE_ENV !== 'production') {
     return (name ? "<" + classify(name) + ">" : "<Anonymous>") + (file && includeFile !== false ? " at " + file : '');
   };
 
-  var repeat = function (str, n) {
+  var repeat = function repeat(str, n) {
     var res = '';
     while (n) {
       if (n % 2 === 1) {
@@ -591,7 +593,7 @@ if (process.env.NODE_ENV !== 'production') {
     return res;
   };
 
-  generateComponentTrace = function (vm) {
+  generateComponentTrace = function generateComponentTrace(vm) {
     if (vm._isVue && vm.$parent) {
       var tree = [];
       var currentRecursiveSequence = 0;
@@ -709,7 +711,7 @@ prototypeAccessors.child.get = function () {
 
 Object.defineProperties(VNode.prototype, prototypeAccessors);
 
-var createEmptyVNode = function (text) {
+var createEmptyVNode = function createEmptyVNode(text) {
   if (text === void 0) text = '';
 
   var node = new VNode();
@@ -760,9 +762,9 @@ var arrayMethods = Object.create(arrayProto);['push', 'pop', 'shift', 'unshift',
   def(arrayMethods, method, function mutator() {
     var args = [],
         len = arguments.length;
-    while (len--) args[len] = arguments[len];
-
-    var result = original.apply(this, args);
+    while (len--) {
+      args[len] = arguments[len];
+    }var result = original.apply(this, args);
     var ob = this.__ob__;
     var inserted;
     switch (method) {
@@ -1183,7 +1185,7 @@ strats.provide = mergeDataOrFn;
 /**
  * Default strategy.
  */
-var defaultStrat = function (parentVal, childVal) {
+var defaultStrat = function defaultStrat(parentVal, childVal) {
   return childVal === undefined ? parentVal : childVal;
 };
 
@@ -1442,7 +1444,7 @@ function assertType(value, type) {
   var valid;
   var expectedType = getType(type);
   if (simpleCheckRE.test(expectedType)) {
-    var t = typeof value;
+    var t = typeof value === 'undefined' ? 'undefined' : _typeof(value);
     valid = t === expectedType.toLowerCase();
     // for primitive wrapper objects
     if (!valid && t === 'object') {
@@ -1564,7 +1566,7 @@ var useMacroTask = false;
 // events triggered in the same loop is by using MessageChannel.
 /* istanbul ignore if */
 if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
-  macroTimerFunc = function () {
+  macroTimerFunc = function macroTimerFunc() {
     setImmediate(flushCallbacks);
   };
 } else if (typeof MessageChannel !== 'undefined' && (isNative(MessageChannel) ||
@@ -1573,12 +1575,12 @@ MessageChannel.toString() === '[object MessageChannelConstructor]')) {
   var channel = new MessageChannel();
   var port = channel.port2;
   channel.port1.onmessage = flushCallbacks;
-  macroTimerFunc = function () {
+  macroTimerFunc = function macroTimerFunc() {
     port.postMessage(1);
   };
 } else {
   /* istanbul ignore next */
-  macroTimerFunc = function () {
+  macroTimerFunc = function macroTimerFunc() {
     setTimeout(flushCallbacks, 0);
   };
 }
@@ -1587,7 +1589,7 @@ MessageChannel.toString() === '[object MessageChannelConstructor]')) {
 /* istanbul ignore next, $flow-disable-line */
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   var p = Promise.resolve();
-  microTimerFunc = function () {
+  microTimerFunc = function microTimerFunc() {
     p.then(flushCallbacks);
     // in problematic UIWebViews, Promise.then doesn't completely break, but
     // it can get stuck in a weird state where callbacks are pushed into the
@@ -1655,7 +1657,7 @@ if (process.env.NODE_ENV !== 'production') {
   var allowedGlobals = makeMap('Infinity,undefined,NaN,isFinite,isNaN,' + 'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' + 'Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,' + 'require' // for Webpack/Browserify
   );
 
-  var warnNonPresent = function (target, key) {
+  var warnNonPresent = function warnNonPresent(target, key) {
     warn("Property or method \"" + key + "\" is not defined on the instance but " + 'referenced during render. Make sure that this property is reactive, ' + 'either in the data option, or for class-based components, by ' + 'initializing the property. ' + 'See: https://vuejs.org/v2/guide/reactivity.html#Declaring-Reactive-Properties.', target);
   };
 
@@ -1715,10 +1717,10 @@ if (process.env.NODE_ENV !== 'production') {
   var perf = inBrowser && window.performance;
   /* istanbul ignore if */
   if (perf && perf.mark && perf.measure && perf.clearMarks && perf.clearMeasures) {
-    mark = function (tag) {
+    mark = function mark(tag) {
       return perf.mark(tag);
     };
-    measure = function (name, startTag, endTag) {
+    measure = function measure(name, startTag, endTag) {
       perf.measure(name, startTag, endTag);
       perf.clearMarks(startTag);
       perf.clearMarks(endTag);
@@ -1986,7 +1988,7 @@ function resolveAsyncComponent(factory, baseCtor, context) {
     var contexts = factory.contexts = [context];
     var sync = true;
 
-    var forceRender = function () {
+    var forceRender = function forceRender() {
       for (var i = 0, l = contexts.length; i < l; i++) {
         contexts[i].$forceUpdate();
       }
@@ -2399,7 +2401,7 @@ function mountComponent(vm, el, hydrating) {
   var updateComponent;
   /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-    updateComponent = function () {
+    updateComponent = function updateComponent() {
       var name = vm._name;
       var id = vm._uid;
       var startTag = "vue-perf-start:" + id;
@@ -2416,7 +2418,7 @@ function mountComponent(vm, el, hydrating) {
       measure("vue " + name + " patch", startTag, endTag);
     };
   } else {
-    updateComponent = function () {
+    updateComponent = function updateComponent() {
       vm._update(vm._render(), hydrating);
     };
   }
@@ -2965,7 +2967,7 @@ function initProps(vm, propsOptions) {
   var isRoot = !vm.$parent;
   // root instance props should be converted
   observerState.shouldConvert = isRoot;
-  var loop = function (key) {
+  var loop = function loop(key) {
     keys.push(key);
     var value = validateProp(key, propsOptions, propsData, vm);
     /* istanbul ignore else */
@@ -2990,8 +2992,9 @@ function initProps(vm, propsOptions) {
     }
   };
 
-  for (var key in propsOptions) loop(key);
-  observerState.shouldConvert = true;
+  for (var key in propsOptions) {
+    loop(key);
+  }observerState.shouldConvert = true;
 }
 
 function initData(vm) {
@@ -3345,7 +3348,7 @@ function bindObjectProps(data, tag, value, asProp, isSync) {
         value = toObject(value);
       }
       var hash;
-      var loop = function (key) {
+      var loop = function loop(key) {
         if (key === 'class' || key === 'style' || isReservedAttribute(key)) {
           hash = data;
         } else {
@@ -3364,7 +3367,9 @@ function bindObjectProps(data, tag, value, asProp, isSync) {
         }
       };
 
-      for (var key in value) loop(key);
+      for (var key in value) {
+        loop(key);
+      }
     }
   }
   return data;
@@ -4431,7 +4436,7 @@ var isReservedAttr = makeMap('style,class');
 
 // attributes that should be using props for binding
 var acceptValue = makeMap('input,textarea,option,select,progress');
-var mustUseProp = function (tag, type, attr) {
+var mustUseProp = function mustUseProp(tag, type, attr) {
   return attr === 'value' && acceptValue(tag) && type !== 'button' || attr === 'selected' && tag === 'option' || attr === 'checked' && tag === 'input' || attr === 'muted' && tag === 'video';
 };
 
@@ -4441,15 +4446,15 @@ var isBooleanAttr = makeMap('allowfullscreen,async,autofocus,autoplay,checked,co
 
 var xlinkNS = 'http://www.w3.org/1999/xlink';
 
-var isXlink = function (name) {
+var isXlink = function isXlink(name) {
   return name.charAt(5) === ':' && name.slice(0, 5) === 'xlink';
 };
 
-var getXlinkProp = function (name) {
+var getXlinkProp = function getXlinkProp(name) {
   return isXlink(name) ? name.slice(6, name.length) : '';
 };
 
-var isFalsyAttrValue = function (val) {
+var isFalsyAttrValue = function isFalsyAttrValue(val) {
   return val == null || val === false;
 };
 
@@ -4546,7 +4551,7 @@ var isHTMLTag = makeMap('html,body,base,head,link,meta,style,title,' + 'address,
 // contain child elements.
 var isSVG = makeMap('svg,animate,circle,clippath,cursor,defs,desc,ellipse,filter,font-face,' + 'foreignObject,g,glyph,image,line,marker,mask,missing-glyph,path,pattern,' + 'polygon,polyline,rect,switch,symbol,text,textpath,tspan,use,view', true);
 
-var isReservedTag = function (tag) {
+var isReservedTag = function isReservedTag(tag) {
   return isHTMLTag(tag) || isSVG(tag);
 };
 
@@ -5441,7 +5446,7 @@ function _update(oldVnode, vnode) {
   }
 
   if (dirsWithInsert.length) {
-    var callInsert = function () {
+    var callInsert = function callInsert() {
       for (var i = 0; i < dirsWithInsert.length; i++) {
         callHook$1(dirsWithInsert[i], 'inserted', vnode, oldVnode);
       }
@@ -5862,7 +5867,7 @@ function getStyle(vnode, checkChild) {
 
 var cssVarRE = /^--/;
 var importantRE = /\s*!important$/;
-var setProp = function (el, name, val) {
+var setProp = function setProp(el, name, val) {
   /* istanbul ignore if */
   if (cssVarRE.test(name)) {
     el.style.setProperty(name, val);
@@ -6018,7 +6023,7 @@ function resolveTransition(def) {
     return;
   }
   /* istanbul ignore else */
-  if (typeof def === 'object') {
+  if ((typeof def === 'undefined' ? 'undefined' : _typeof(def)) === 'object') {
     var res = {};
     if (def.css !== false) {
       extend(res, autoCssTransition(def.name || 'v'));
@@ -6098,11 +6103,11 @@ function whenTransitionEnds(el, expectedType, cb) {
   }
   var event = type === TRANSITION ? transitionEndEvent : animationEndEvent;
   var ended = 0;
-  var end = function () {
+  var end = function end() {
     el.removeEventListener(event, onEnd);
     cb();
   };
-  var onEnd = function (e) {
+  var onEnd = function onEnd(e) {
     if (e.target === el) {
       if (++ended >= propCount) {
         end();
@@ -6817,7 +6822,7 @@ var Transition = {
           return oldRawChild;
         }
         var delayedLeave;
-        var performLeave = function () {
+        var performLeave = function performLeave() {
           delayedLeave();
         };
         mergeVNodeHook(data, 'afterEnter', performLeave);
@@ -7041,14 +7046,14 @@ Vue$3.nextTick(function () {
   }
 }, 0);
 
-var unity = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "webgl-content" }, [_c('div', { style: { width: _vm.width + 'px', height: _vm.height + 'px' }, attrs: { "id": "unity-container" } }), _vm._v(" "), _vm.loaded == false ? _c('div', [_c('div', { staticClass: "unity-loader" }, [_c('div', { staticClass: "bar" }, [_c('div', { staticClass: "fill", style: { width: _vm.progress * 100 + '%' } })])])]) : _vm._e(), _vm._v(" "), _vm.hideFooter !== true ? _c('div', { staticClass: "footer" }, [_c('a', { staticClass: "fullscreen", on: { "click": function ($event) {
+var unity$1 = { render: function render() {
+    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('div', { staticClass: "webgl-content" }, [_c('div', { style: { width: _vm.width + 'px', height: _vm.height + 'px' }, attrs: { "id": "unity-container" } }), _vm._v(" "), _vm.loaded == false ? _c('div', [_c('div', { staticClass: "unity-loader" }, [_c('div', { staticClass: "bar" }, [_c('div', { staticClass: "fill", style: { width: _vm.progress * 100 + '%' } })])])]) : _vm._e(), _vm._v(" "), _vm.hideFooter !== true ? _c('div', { staticClass: "footer" }, [_c('a', { staticClass: "fullscreen", on: { "click": function click($event) {
           $event.preventDefault();_vm.fullscreen($event);
         } } }, [_vm._v("Fullscreen")])]) : _vm._e()]);
   }, staticRenderFns: [],
   props: ['src', 'module', 'width', 'height', 'externalProgress', 'unityLoader', 'hideFooter'],
   name: 'UnityWebGL',
-  data() {
+  data: function data() {
     return {
       gameInstance: null,
       loaded: false,
@@ -7056,12 +7061,14 @@ var unity = { render: function () {
       error: null
     };
   },
+
   methods: {
-    fullscreen() {
+    fullscreen: function fullscreen() {
       this.gameInstance.SetFullscreen(1);
     }
   },
-  beforeMount() {
+  beforeMount: function beforeMount() {
+    var _this = this;
 
     if (!this.eventBus) {
       this.eventBus = new Vue$3({
@@ -7073,71 +7080,68 @@ var unity = { render: function () {
     }
 
     if (typeof UnityLoader === 'undefined' && this.unityLoader && !this.eventBus.load) {
-      const script = document.createElement('SCRIPT');
+      var script = document.createElement('SCRIPT');
       script.setAttribute('src', this.unityLoader);
       script.setAttribute('async', '');
       script.setAttribute('defer', '');
       document.body.appendChild(script);
       this.eventBus.load = true;
-      script.onload = () => {
-        this.eventBus.ready = true;
-        this.eventBus.$emit('onload');
+      script.onload = function () {
+        _this.eventBus.ready = true;
+        _this.eventBus.$emit('onload');
       };
     } else {
       this.eventBus.ready = true;
       this.eventBus.load = true;
     }
   },
-  mounted() {
-    const instantiate = () => {
+  mounted: function mounted() {
+    var _this2 = this;
+
+    var instantiate = function instantiate() {
       if (typeof UnityLoader === 'undefined') {
-        let error = 'The UnityLoader was not defined, please add the script tag ' + 'to the base html and embed the UnityLoader.js file Unity exported or use "unityLoader" attribute for path to UnityLoader.js.';
+        var error = 'The UnityLoader was not defined, please add the script tag ' + 'to the base html and embed the UnityLoader.js file Unity exported or use "unityLoader" attribute for path to UnityLoader.js.';
         console.error(error);
-        this.error = error;
+        _this2.error = error;
         return;
       }
-      if (this.src === null) {
-        let error = 'Please provice a path to a valid JSON in the "src" attribute.';
-        console.error(error);
-        this.error = error;
+      if (_this2.src === null) {
+        var _error = 'Please provice a path to a valid JSON in the "src" attribute.';
+        console.error(_error);
+        _this2.error = _error;
         return;
       }
-      let params = {};
-      if (this.externalProgress) {
+      var params = {};
+      if (_this2.externalProgress) {
         params.onProgress = UnityProgress;
       } else {
-        params.onProgress = (gameInstance, progress) => {
-          this.loaded = progress === 1;
-          this.progress = progress;
+        params.onProgress = function (gameInstance, progress) {
+          _this2.loaded = progress === 1;
+          _this2.progress = progress;
         };
       }
-      if (this.module) {
-        params.Module = this.module;
+      if (_this2.module) {
+        params.Module = _this2.module;
       }
-      this.gameInstance = UnityLoader.instantiate('unity-container', this.src, params);
+      _this2.gameInstance = UnityLoader.instantiate('unity-container', _this2.src, params);
     };
 
     if (this.eventBus.ready) {
       instantiate();
     } else {
-      this.eventBus.$on('onload', () => {
+      this.eventBus.$on('onload', function () {
         instantiate();
       });
     }
   }
 };
 
-const install = Vue => {
-  Vue.component('unity', unity);
+var install = function install(Vue) {
+  Vue.component('unity', unity$1);
 };
 
-unity.install = install;
+unity$1.install = install;
 
-const Unity = unity;
-
-exports.Unity = Unity;
-exports['default'] = Unity;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+return unity$1;
 
 })));

@@ -6,6 +6,6 @@ const install = Vue => {
 
 unity.install = install
 
-export const Unity = unity
+// export const Unity = unity
 
-export default Unity
+export default unity
