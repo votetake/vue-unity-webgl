@@ -102,19 +102,20 @@
           this.error = error
           return
         }
-        let params = {}
-        if (this.externalProgress) {
-          params.onProgress = UnityProgress
-        } else {
-          params.onProgress = ((gameInstance, progress) => {
-            this.loaded = (progress === 1)
-            this.progress = progress
-          })
-        }
-        if (this.module) {
-          params.Module = this.module
-        }
-        this.gameInstance = UnityLoader.instantiate('unity-container', this.src, params)
+        // let params = {}
+        // if (this.externalProgress) {
+        //   params.onProgress = UnityProgress
+        // } else {
+        //   params.onProgress = ((gameInstance, progress) => {
+        //     this.loaded = (progress === 1)
+        //     this.progress = progress
+        //   })
+        // }
+        // if (this.module) {
+        //   params.Module = this.module
+        // }
+        // this.gameInstance = UnityLoader.instantiate('unity-container', this.src, params)
+        this.gameInstance = UnityLoader.instantiate('unity-container', this.src)
       }
 
       if (this.eventBus.ready) {
