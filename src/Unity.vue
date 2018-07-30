@@ -1,15 +1,12 @@
 <template>
   <div class="webgl-content">
-    <div id="unity-container" v-bind:style="{ width: width + 'px', height: height + 'px' }"></div>
+    <div id="unity-container" v-bind:style="{ width: 100 + '%', height: 100 + '%' }"></div>
     <div v-if="loaded == false">
       <div class="unity-loader">
         <div class="bar">
           <div class="fill" v-bind:style="{ width: progress * 100 + '%'}"></div>
         </div>
       </div>
-    </div>
-    <div class="footer" v-if="hideFooter !== true">
-      <a class="fullscreen" @click.prevent="fullscreen">Fullscreen</a>
     </div>
   </div>
 </template>
@@ -31,6 +28,36 @@
     methods: {
       fullscreen () {
         this.gameInstance.SetFullscreen(1)
+      },
+      setScenario () {
+        this.gameInstance.SendMessage("WebInputManager", "setScenario", "scenario"); // json scenario data
+      },
+      setExperimentData() {
+        this.gameInstance.SendMessage("WebInputManager", "setExperimentData", "csvUrl"); // url string
+      },
+      startBtn () {
+        this.gameInstance.SendMessage("WebInputManager", "startBtn");
+      },
+      pauseBtn () {
+        this.gameInstance.SendMessage("WebInputManager", "pauseBtn");
+      },
+      mediaSeekBarControl () {
+        this.gameInstance.SendMessage("WebInputManager", "mediaSeekBarControl", "time"); // float time
+      },
+      clickGazePath () {
+        this.gameInstance.SendMessage("WebInputManager", "clickGazePath", "flag"); // bool flag
+      },
+      clickHeatMap () {
+        this.gameInstance.SendMessage("WebInputManager", "clickHeatMap", "flag"); // bool flag
+      },
+      clickGazeReplay () {
+        this.gameInstance.SendMessage("WebInputManager", "clickGazeReplay", "flag"); // bool flag
+      },
+      cameraDisable () {
+        this.gameInstance.SendMessage("WebInputManager", "cameraDisable");
+      },
+      setPlaybackSpeed () {
+        this.gameInstance.SendMessage("WebInputManager", "setPlaybackSpeed", "speed"); // float speed
       }
     },
     beforeMount() {
@@ -97,6 +124,9 @@
           instantiate()
         })
       }
+    },
+    destroyed () {
+      this.cameraDisable();
     }
   }
 
