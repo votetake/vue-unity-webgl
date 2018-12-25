@@ -19,7 +19,7 @@ To get stated import the Unity component from `vue-unity-webgl`. Once imported y
 </template>
 
 <script>
-  import { Unity, Message } from 'vue-unity-webgl'
+  import Unity from 'vue-unity-webgl'
   
   new Vue({
     components: { Unity }
@@ -40,18 +40,24 @@ To get stated import the Unity component from `vue-unity-webgl`. Once imported y
 
 
 # Communication
-Unity allows you to send Javascript messages to the Unity content. In order to do so using VueJs you have to import the Message function from `vue-unity-webgl`. The first parameter is the target game object name, the next is the method name, and the last is a optional param value.
+Unity allows you to send Javascript messages to the Unity content. In order to do so using VueJs you have to add a ref to the `<unity>` tag, and call the `message(object, method, param)` method through `this.$refs`.
 
 ```js
-import { Message } from 'vue-unity-webgl'
+<template>
+  <unity src="static/Build/game.json" width="1000" height="600" unityLoader="static/Build/UnityLoader.js" ref="myInstance"></unity>  
+</template>
+
+<script>
+import Unity from 'vue-unity-webgl'
 
 new Vue({
   methods: {
     onClick () {
-      Message ("object", "method", "param");
+      this.$refs.myInstance.message("object", "method", "param")
     }
   }
 })
+</script>
 ```
 
 # styling
