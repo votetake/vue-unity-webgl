@@ -7065,6 +7065,16 @@ var unity$1 = { render: function render() {
   methods: {
     fullscreen: function fullscreen() {
       this.gameInstance.SetFullscreen(1);
+    },
+    message: function message(gameObject, method, param) {
+      if (param === null) {
+        param = '';
+      }
+      if (this.gameInstance !== null) {
+        this.gameInstance.SendMessage(gameObject, method, param);
+      } else {
+        console.warn('vue-unity-webgl: you\'ve sent a message to the Unity content, but it wasn\t instantiated yet.');
+      }
     }
   },
   beforeMount: function beforeMount() {

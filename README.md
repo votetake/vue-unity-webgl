@@ -7,7 +7,7 @@ Easy to use Unity 5.6 or newer (also Unity 2017 or newer)  WebGL player componen
 ## Install
 
 ```Bash
-npm install  https://github.com/votetake/vue-unity-webgl.git --save
+npm install vue-unity-webgl
 ```
 
 ## Usage
