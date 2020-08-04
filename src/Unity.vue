@@ -87,7 +87,7 @@
         }
         let params = {}
         if (this.externalProgress) {
-          params.onProgress = UnityProgress
+          params.onProgress = this.externalProgress
         } else {
           params.onProgress = ((gameInstance, progress) => {
             this.loaded = (progress === 1)
