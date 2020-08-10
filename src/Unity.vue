@@ -1,6 +1,6 @@
 <template>
   <div class="webgl-content">
-    <div id="unity-container" v-bind:style="{ width: width + 'px', height: height + 'px' }"></div>
+    <div :id="containerId" v-bind:style="{ width: width + 'px', height: height + 'px' }"></div>
     <div v-if="loaded == false">
       <div class="unity-loader">
         <div class="bar">
@@ -22,6 +22,7 @@
     name: 'UnityWebGL',
     data () {
       return {
+        containerId: 'unity-container-' + Number(Math.random().toString().substr(3, length) + Date.now()).toString(36),
         gameInstance: null,
         loaded: false,
         progress: 0,
@@ -97,7 +98,7 @@
         if (this.module) {
           params.Module = this.module
         }
-        this.gameInstance = UnityLoader.instantiate('unity-container', this.src, params)
+        this.gameInstance = UnityLoader.instantiate(this.containerId, this.src, params)
       }
 
       if (this.eventBus.ready) {
